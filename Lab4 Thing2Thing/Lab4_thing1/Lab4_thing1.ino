@@ -1,28 +1,25 @@
 /******************************************************************************
   Project  : NECTEC IoT Camp 2016
-  Compiler : Arduino 1.6.7
   Board    : ESPresso Lite V2
-  Device   : DHT11, RELAY module
-  Dashboard : DHT_dashboard
-  Library : DHT-sensor-library, CMMC_Blink
   Author   : Chiang Mai Maker Club
 *******************************************************************************/
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
-#include <MicroGear.h>  // v 1.1.7
+#include <MicroGear.h>
 #include "CMMC_Blink.hpp"
+
 CMMC_Blink blinker;
 
 const char* ssid     = "";  // Change your ssid wifi
 const char* password = "";  // Change your password wifi
 
 // NETPIE.io : lab_device
-#define APPID      ""
-#define KEY        ""
-#define SECRET     ""
-#define ALIAS      "thing1"
-#define CHAT_WITH  "thing2"
+#define APPID      ""       // Change your appID
+#define KEY        ""       // Change your Key
+#define SECRET     ""       // Change your SECRET
+#define ALIAS      "thing1" // Change your name
+#define CHAT_WITH  "thing2" // Change your chat with name
 
 #define BUTTON 0
 
@@ -46,8 +43,6 @@ void loop() {
     microgear.loop();
 
     bool state = digitalRead(BUTTON);
-    Serial.println(state);
-    digitalWrite(BUTTON, !state);
     if (state == 1) {
       microgear.chat(CHAT_WITH, "ON");
     }
@@ -55,6 +50,7 @@ void loop() {
       microgear.chat(CHAT_WITH, "OFF");
     }
     delay(200);
+    
   }
   else
   {
