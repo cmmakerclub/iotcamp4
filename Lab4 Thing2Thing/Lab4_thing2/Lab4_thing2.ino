@@ -85,9 +85,14 @@ void onMsghandler(char *topic, uint8_t* msg, unsigned int msglen) {
 
   if (msg2 == "ON")
   {
-    digitalWrite(LED, !digitalRead(LED));
-    delay(100);
+    digitalWrite(LED, LOW);
     Serial.println("LED Toggle");
+  }
+  else if (msg2 == "OFF") {
+    digitalWrite(LED, HIGH);
+  }
+  else {
+    
   }
 }
 

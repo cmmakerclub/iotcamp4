@@ -14,14 +14,15 @@
 #include "CMMC_Blink.hpp"
 CMMC_Blink blinker;
 
-const char* ssid     = "";  // Change your ssid wifi 
+const char* ssid     = "";  // Change your ssid wifi
 const char* password = "";  // Change your password wifi
 
 // NETPIE.io : lab_device
-#define APPID   ""             // Change your appID
-#define KEY     ""       // Change your Key
-#define SECRET  "" // Change your SECRET
-#define ALIAS   "thing1"              // Change your name
+#define APPID      ""
+#define KEY        ""
+#define SECRET     ""
+#define ALIAS      "thing1"
+#define CHAT_WITH  "thing2"
 
 #define BUTTON 0
 
@@ -29,7 +30,9 @@ WiFiClient client;
 MicroGear microgear(client);
 
 void init_wifi();
-void init_hardware();
+void init_hardware() {
+  pinMode(BUTTON, INPUT);
+}
 
 void setup() {
   init_wifi();
@@ -42,11 +45,16 @@ void loop() {
   {
     microgear.loop();
 
-    if(digitalRead(BUTTON) == LOW)  {
-      microgear.chat("thing2", "ON");  
-      delay(200);
+    bool state = digitalRead(BUTTON);
+    Serial.println(state);
+    digitalWrite(BUTTON, !state);
+    if (state == 1) {
+      microgear.chat(CHAT_WITH, "ON");
     }
-    Serial.println(digitalRead(BUTTON));
+    else {
+      microgear.chat(CHAT_WITH, "OFF");
+    }
+    delay(200);
   }
   else
   {
@@ -81,7 +89,7 @@ void onMsghandler(char *topic, uint8_t* msg, unsigned int msglen) {
   msg[msglen] = '\0';
   Serial.println((char *)msg);
   String msg2 = String((char*)msg);
-  String topic2 = String(topic); 
+  String topic2 = String(topic);
 
   Serial.print(" Topic: ");
   Serial.print(topic2);
@@ -119,9 +127,5 @@ void init_wifi() {
   microgear.connect(APPID);
   blinker.detach();
   Serial.println("netpie.io connected.");
-}
-
-void init_hardware() {
-  pinMode(BUTTON, INPUT);
 }
 
