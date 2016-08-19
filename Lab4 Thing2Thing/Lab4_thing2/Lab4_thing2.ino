@@ -67,7 +67,8 @@ void onLostgear(char *attribute, uint8_t* msg, unsigned int msglen) {
 
 void onConnected(char *attribute, uint8_t* msg, unsigned int msglen) {
   Serial.println("Connected to NETPIE...");
-  microgear.setName("mygear");
+  microgear.setName(ALIAS);
+  microgear.subscribe("/gearname/#");
 }
 
 void onMsghandler(char *topic, uint8_t* msg, unsigned int msglen) {
@@ -75,6 +76,12 @@ void onMsghandler(char *topic, uint8_t* msg, unsigned int msglen) {
   msg[msglen] = '\0';
   Serial.println((char *)msg);
   String msg2 = String((char*)msg);
+  String topic2 = String(topic); 
+
+  Serial.print(" Topic: ");
+  Serial.print(topic2);
+  Serial.print(" ---> ");
+  Serial.println(msg2);
 
   if (msg2 == "ON")
   {
